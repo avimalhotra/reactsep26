@@ -1,7 +1,7 @@
-export default function Footer(){
+export default function Footer({year}){
      return (
           <footer className="d-flex justify-content-between p-3">
-               <p>&copy; 2026</p>
+               <p>&copy; {year}</p>
                <p>All Rights Reserved</p>
           </footer>
      )
