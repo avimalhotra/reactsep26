@@ -1,33 +1,30 @@
 import Header from "./Header";
 import Footer from "./Footer";
+import { useState } from "react";
 
 export default function App(){
 
-  function sayHi(){ console.log("Hello") }
-  function sayHello(x){ console.log(`Hello ${x}`) }
-
-  const title="Avi";
-  const id=212;
-
+  const [count,setCount]=useState(0);
+ 
+  console.log( count );
+  
   return (
-      
+
       <div className="container-xxl">
-        <Header username={title} userid={id} userisvalid={true}></Header>
+        <Header></Header>
        
         <main className="p-3">
             <h2>Main</h2>      
             <p>Paragraph</p>
-            <p>Hello {title}</p>
-            
+           
             <hr />
 
-            <button onClick={ sayHi } className="btn btn-primary me-2">Hi</button>
-            <button onClick={ e=>sayHello(e.target.textContent) } className="btn btn-primary me-2">Hello</button>
-            <button onClick={ e=>sayHello(e.target.textContent) } className="btn btn-primary me-2">Hola</button>
-
+            <button className="btn btn-primary me-3" onClick={()=>setCount(count+1)}>Increment</button>
+            <button className="btn btn-primary me-3" onClick={()=>setCount(count-1)}>Decrement</button>
+            <button className="btn btn-primary me-3" onClick={()=>setCount(0)}>Reset</button>
+            <output>{count}</output>
 
         </main>
-
         
         <Footer year={2026} ></Footer>
       </div>
