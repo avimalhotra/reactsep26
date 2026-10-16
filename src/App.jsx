@@ -1,26 +1,59 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { useState } from "react";
+import { use, useState } from "react";
 
 export default function App(){
 
+
+
   const [counter,setCounter]=useState(0);
-  const [name,setName]=useState("");
-  const [age,setAge]=useState("");
+  // const [name,setName]=useState("");
+  // const [age,setAge]=useState("");
 
-  // console.log( counter );
+  // const [car,setCar]=useState({ name:"swift", fuel:"petrol" });      // object
+  // const [cars,setCars]=useState(["alto","brezza"]);           // array
 
-  function updateCounter(){
-    
-    // setCounter(counter+counter);
-    // setCounter(counter+1);
-    // setCounter(counter+2);
-    // setCounter(counter+3);
+  const [form,setForm]=useState({name:"", age:"", email:""});
+  const [todo,setTodo]=useState(["alto","swift","brezza"]);
 
-    setCounter(prev=>prev+1);
-    setCounter(prev=>prev+2);
-    setCounter(prev=>prev+3);
 
+  function updateCar(){
+      // setCar(i=>({...i, power:88, torque:120}));
+      // setCars(i=>([...i,"swift"]));
+  }
+
+  function updateForm(e){
+    e.preventDefault();
+
+    // console.log( e.target.name.value, e.target.age.value );
+      // const { name, age }={e.target.name.value, e.target.age.value};
+
+      console.log("form submited");
+      
+
+  }
+
+  function insertData(e){
+      const {name,value}=e.target;
+      
+      setForm( i=>({...i, [name]: value }));
+
+  }
+
+  function addCar(e){
+      e.preventDefault();
+
+      const item=e.target.car.value;
+
+      setTodo(i=>([...i,item]));
+      
+  }
+
+  function removeCar(e){
+      const car=e.target.parentNode.textContent.trim();        // string
+
+      setTodo( todo.filter(i=>i!=car) );
+      
   }
 
 
@@ -41,15 +74,33 @@ export default function App(){
 
             <hr />
 
-            <button className="btn btn-outline-primary me-3" onClick={updateCounter}>Update</button>
+            <button className="btn btn-outline-primary me-3" onClick={updateCar}>Update</button>
 
             <hr />
 
-            <label>Name: <input type="text" value={name} onChange={e=>setName(e.target.value)} /> </label>
-            <label>Age: <input type="number" value={age} onChange={e=>setAge(e.target.value)} /> </label>
+            <form onSubmit={updateForm}>
+               <label>Name: <input type="text" name="name" value={form.name} required onChange={insertData} /> </label>
+              <label>Age: <input type="number" name="age" required value={form.age} onChange={insertData} /> </label>
+              <label>Email: <input type="email" name="email" required value={form.email} onChange={insertData} /> </label>
+              <button>Update</button>
+            </form>
+           
             <br /> <br />
-            <p>Name: {name}</p>
-            <p>Age: {age}</p>
+            <p>Name: {}</p>
+            <p>Age: {}</p>
+
+            <hr />
+
+          <form onSubmit={addCar} > <label>car: <input type="search" name="car" required /></label> <button>Add car</button> </form>
+          
+          <ol className="list-group">
+            {
+              todo.map((num,ind)=>(
+                <li className="list-group-item" key={ind}> {num} <button onClick={removeCar} className="btn-close float-end"></button> </li>
+              ))
+            }
+            </ol>
+
             
         </main>
         
