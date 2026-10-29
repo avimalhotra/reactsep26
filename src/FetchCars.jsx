@@ -5,6 +5,19 @@ export default function FetchCarsData(){
      const [data,setData]=useState([]);
      const [error,setError]=useState(null);
      const [loading,setLoading]=useState(true);
+     const [sort,setSort]=useState("");
+
+   
+     function sortData(e){
+          const x=e.target.value;
+          setSort(x);
+          
+          data.sort((a,b)=>{
+               if(a[x] < b[x]){ return -1 }
+               else{ return 1}
+          });
+     
+     }
      
      useEffect(()=>{
 
@@ -14,11 +27,9 @@ export default function FetchCarsData(){
                          const x=await fetch("https://techaltum.com/node/api");
                          if(!x.ok){ throw new Error(x.status) }
                          const y=await x.json();
-                         // console.log( y );
                          setData(y);
                    }
                    catch(err){
-                         // console.warn(err);
                          setError(err);
                    }
                    finally{
@@ -27,14 +38,28 @@ export default function FetchCarsData(){
 
                }
 
-               fetchCars();
+          fetchCars();
      },[]);
+
 
      if(loading){ return <h2>Loading Data</h2> }
      if(error){ return <h2>Error while fetching data</h2> }
 
      return (
           <>
+               <div className="row justify-content-between mb-3">
+                    <div className="col-auto">
+                         <h3>Data From API</h3>
+                    </div>
+                    <div className="col-auto">
+                         <select className="form-select" onChange={sortData} defaultValue="">
+                              <option value="" disabled>--Choose Sort--</option>
+                              <option value="name">Name</option>
+                              <option value="type">Type</option>
+                              <option value="price">Price</option>
+                         </select>
+                    </div>
+               </div>
                <table className="table table-bordered">
                     <thead>
                          <tr>
