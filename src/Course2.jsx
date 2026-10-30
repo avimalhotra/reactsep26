@@ -1,10 +1,13 @@
-export default function Course2({trainer,reset}){
+export default function Course2({}){
      return (
           <>
-               <h2>Angular</h2>
-               <p>Angular Details</p>
-               <p>Trainer:{trainer}</p>
-               <button className="btn btn-primary" onClick={()=>reset(0)}>Reset</button>
+              <div className="card">
+               <div className="card-body">
+                     <h2>Angular</h2>
+                    <p>Angular Details</p>
+                    {/* <p>Trainer:{trainer.name}</p> */}
+               </div>
+              </div>
           </>
      )
 }
