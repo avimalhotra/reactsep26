@@ -1,10 +1,12 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { useEffect, useState, useRef, useContext, useReducer, useMemo } from "react";
+import { useEffect, useState, useRef, useContext, useReducer, useMemo, useCallback } from "react";
 // import FetchCarsData from "./FetchCars";
-// import Course1 from "./Course1";
+import Course1 from "./Course1";
 // import Course2 from "./Course2";
 import {TrainerContext} from "./contextapi";
+import useFetch from "./useFetch";
+
 
 export default function App(){
 
@@ -12,29 +14,43 @@ export default function App(){
   const [counter,setCounter]=useState(0);
 
   
-  const expensiveCalculation = useMemo(() => {
-    // Simulate an expensive calculation
-    let result = 0;
-    for (let i = 0; i < 1000000000; i++) {
-      result += i;
-    }
-    return result;
+  // const expensiveCalculation = useMemo(() => {
+  //   // Simulate an expensive calculation
+  //   let result = 0;
+  //   for (let i = 0; i < 1000000000; i++) {
+  //     result += i;
+  //   }
+  //   return result;
+  // },[]);
+
+  
+  
+  // const initialVal={ count:0 };
+
+  // function reducer(state,action){
+  //     switch(action.type){
+  //       case "inc" : return { count: state.count+1 };
+  //       case "dec" : return { count: state.count-1 };
+  //       case "res" : return { count: initialVal.count };
+  //       default: return state;
+  //     }
+  // }
+
+  // const [state,dispatch]=useReducer(reducer,initialVal);
+
+  // const handleClick=useCallback(()=>{
+  //   console.log(new Date().toLocaleString());
+  // },[counter]);
+  
+
+  const handleClick=useCallback(()=>{
+    setCounter(()=>counter+1);
   },[]);
 
-  
-  
-  const initialVal={ count:0 };
+  const {data,loading,error}=useFetch("https://www.techaltum.com/node/api");
 
-  function reducer(state,action){
-      switch(action.type){
-        case "inc" : return { count: state.count+1 };
-        case "dec" : return { count: state.count-1 };
-        case "res" : return { count: initialVal.count };
-        default: return state;
-      }
-  }
-
-  const [state,dispatch]=useReducer(reducer,initialVal);
+  if( loading){ return <h2>Loading</h2>}
+  if( error){ return <h2>Error</h2>}
 
 
   return (
@@ -54,16 +70,33 @@ export default function App(){
         
             <hr />
 
-
+        {/* 
             <button onClick={()=>dispatch({type:"inc"})} className="btn btn-primary mx-2">Increment</button>
             <button onClick={()=>dispatch({type:"dec"})} className="btn btn-primary mx-2">Decrement</button>
-            <button onClick={()=>dispatch({type:"res"}) } className="btn btn-primary mx-2">Reset</button>
+            <button onClick={()=>dispatch({type:"res"}) } className="btn btn-primary mx-2">Reset</button> */}
 
-              <output>{state.count}</output>
+              {/* <output>{state.count}</output> */}
 
               <hr />
-              <p>Result: {expensiveCalculation } </p>
+              {/* <p>Result: {expensiveCalculation } </p> */}
+              {/* <hr /> */}
 
+              {/* <UseCB onClick={handleClick}></UseCB> */}
+              <button onClick={handleClick}>Add</button>
+
+              <hr />
+
+              
+          {/* <Course1></Course1> */}
+          <table className="table">
+          <tbody>
+            {
+            data.map((elem,ind)=>(
+              <tr key={ind}><td>{elem.name}</td><td>{elem.type}</td><td>{elem.price}</td></tr>
+            ))
+          }
+          </tbody>
+          </table>
 
 
         </main>

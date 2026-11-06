@@ -1,14 +1,18 @@
 // import TrainerContext from "./contextapi";
 // import { useContext } from "react";
 import { CourseContext } from "./contextapi";
+import { memo } from "react";
 
-import NextComp from "./Nextcomp";
+// import NextComp from "./Nextcomp";
 
-export default function Course1(){
+export default memo(function Course1(){
 
      const react={name:"React 19", dur:4};
 
      // const teacher=useContext(TrainerContext);                   // use context
+
+     console.log("react page");
+     
 
      return (
           <>
@@ -18,10 +22,10 @@ export default function Course1(){
                          <h2>React JS</h2>
                          <p>React JS  Details</p>
                          {/* <p>Trainer:{teacher.name}</p> */}
-                         <NextComp></NextComp>
+                         {/* <NextComp></NextComp> */}
                     </div>
                </div>
               </CourseContext.Provider>
           </>
      )
-}
+})
