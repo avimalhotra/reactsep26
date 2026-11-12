@@ -4,7 +4,6 @@ import {  useEffect, useState } from "react";
 export default function FetchCarsData(){
      const [data,setData]=useState([]);
      const [error,setError]=useState(null);
-     const [loading,setLoading]=useState(true);
      const [sort,setSort]=useState("");
 
    
@@ -32,17 +31,14 @@ export default function FetchCarsData(){
                    catch(err){
                          setError(err);
                    }
-                   finally{
-                         setLoading(false);
-                   }
-
+          
                }
 
           fetchCars();
      },[]);
 
 
-     if(loading){ return <h2>Loading Data</h2> }
+
      if(error){ return <h2>Error while fetching data</h2> }
 
      return (

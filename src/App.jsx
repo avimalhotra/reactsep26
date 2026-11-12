@@ -1,60 +1,23 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { useEffect, useState, useRef, useContext, useReducer, useMemo, useCallback } from "react";
-// import FetchCarsData from "./FetchCars";
+import Model from "./Portal";
+import React from "react";
+import { useState, Suspense } from "react";
 import Course1 from "./Course1";
-// import Course2 from "./Course2";
-import {TrainerContext} from "./contextapi";
-import useFetch from "./useFetch";
+import Course2 from "./Course2";
+import ErrorBoundary from "./ErrorBoundary";
+// import FetchCarsData from "./FetchCars";
+
+// Lazy import
+const FetchCars = React.lazy(() => import("./FetchCars"));
 
 
 export default function App(){
 
-  const trainer={name:"Avinash Malhotra", exp:15};
-  const [counter,setCounter]=useState(0);
-
-  
-  // const expensiveCalculation = useMemo(() => {
-  //   // Simulate an expensive calculation
-  //   let result = 0;
-  //   for (let i = 0; i < 1000000000; i++) {
-  //     result += i;
-  //   }
-  //   return result;
-  // },[]);
-
-  
-  
-  // const initialVal={ count:0 };
-
-  // function reducer(state,action){
-  //     switch(action.type){
-  //       case "inc" : return { count: state.count+1 };
-  //       case "dec" : return { count: state.count-1 };
-  //       case "res" : return { count: initialVal.count };
-  //       default: return state;
-  //     }
-  // }
-
-  // const [state,dispatch]=useReducer(reducer,initialVal);
-
-  // const handleClick=useCallback(()=>{
-  //   console.log(new Date().toLocaleString());
-  // },[counter]);
-  
-
-  const handleClick=useCallback(()=>{
-    setCounter(()=>counter+1);
-  },[]);
-
-  const {data,loading,error}=useFetch("https://www.techaltum.com/node/api");
-
-  if( loading){ return <h2>Loading</h2>}
-  if( error){ return <h2>Error</h2>}
+  const [open,setOpen]=useState(false);
 
 
   return (
-      <TrainerContext.Provider value={trainer}>
       <div className="container-xxl">
         
         <Header></Header>
@@ -62,48 +25,46 @@ export default function App(){
         <main className="p-3">
             <h2>Main</h2>      
             <p>Paragraph </p>
-          
-            <button onClick={()=>setCounter(counter+1)} className="btn btn-primary mx-2">Inc</button>
-            <button onClick={()=>setCounter(counter-1)} className="btn btn-primary mx-2">Dec</button>
-            <button onClick={()=>setCounter(0)} className="btn btn-primary mx-2">Res</button>
-            <span className="mx-2">{counter}</span>
-        
-            <hr />
 
-        {/* 
-            <button onClick={()=>dispatch({type:"inc"})} className="btn btn-primary mx-2">Increment</button>
-            <button onClick={()=>dispatch({type:"dec"})} className="btn btn-primary mx-2">Decrement</button>
-            <button onClick={()=>dispatch({type:"res"}) } className="btn btn-primary mx-2">Reset</button> */}
-
-              {/* <output>{state.count}</output> */}
-
-              <hr />
-              {/* <p>Result: {expensiveCalculation } </p> */}
-              {/* <hr /> */}
-
-              {/* <UseCB onClick={handleClick}></UseCB> */}
-              <button onClick={handleClick}>Add</button>
-
-              <hr />
-
-              
-          {/* <Course1></Course1> */}
-          <table className="table">
-          <tbody>
+            <button className="btn btn-primary" onClick={()=>setOpen(true)}>Popup</button>
+      
             {
-            data.map((elem,ind)=>(
-              <tr key={ind}><td>{elem.name}</td><td>{elem.type}</td><td>{elem.price}</td></tr>
-            ))
-          }
-          </tbody>
-          </table>
+              open && (<Model>
+                <div className="overlay">
+                    <div className="popup">
+                      <button className="btn btn-close float-end" aria-label="close" onClick={()=>setOpen(false)}></button>
+                      <h2>Popup</h2>
+                     <iframe width="560" height="315" src="https://www.youtube.com/embed/Ct1LkNxgx9s?si=SE64NiyM_PRhgpLN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+              </Model>)
+            }
+
+            <hr />
+            
+            <div className="row">
+              <div className="col-md-6">
+                 <ErrorBoundary>
+                    <Course1></Course1>
+                 </ErrorBoundary>
+              </div>
+              <div className="col-md-6">
+                <ErrorBoundary>
+                    <Course2></Course2>
+                </ErrorBoundary>
+              </div>
+            </div>
+            <hr />
+           <Suspense fallback={<img src="loader.svg" alt="" width={150} height={150} />}>
+                 <FetchCars></FetchCars>
+           </Suspense>
 
 
         </main>
         
         <Footer year={new Date().getFullYear()}></Footer>
       </div>
-      </TrainerContext.Provider>
+    
     
   )
 }
